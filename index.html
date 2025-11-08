@@ -4,52 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sürpriz!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
-            padding: 50px;
+            padding: 20px;
             background-color: #f0f8ff;
             transition: all 0.3s ease;
             overflow: hidden;
             position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        
         .container {
-            max-width: 500px;
+            max-width: 100%;
+            width: 100%;
             margin: 0 auto;
             position: relative;
             z-index: 10;
+            padding: 15px;
         }
+        
         h1 {
             color: #ff6b6b;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-size: clamp(28px, 8vw, 42px);
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: clamp(20px, 6vw, 32px);
+            font-weight: 500;
+        }
+        
         .buttons {
-            margin-top: 20px;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
+        
         button {
             padding: 15px 30px;
-            font-size: 18px;
-            margin: 10px;
+            font-size: clamp(16px, 5vw, 20px);
+            margin: 5px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-width: 120px;
+            width: 80%;
+            max-width: 200px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
         #yesBtn {
             background-color: #4CAF50;
             color: white;
         }
+        
         #noBtn {
             background-color: #f44336;
             color: white;
+            position: relative;
         }
+        
         #message {
-            font-size: 24px;
+            font-size: clamp(24px, 6vw, 32px);
             color: #ff6b6b;
             margin-top: 30px;
-            font-weight: bold;
+            font-weight: 600;
+            padding: 0 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
+        
         .hidden {
             display: none;
         }
@@ -60,6 +109,7 @@
             color: #ff6b6b;
             animation: float 3s ease-in-out infinite;
             z-index: 1;
+            pointer-events: none;
         }
         
         @keyframes float {
@@ -70,6 +120,27 @@
             100% {
                 transform: translateY(-100vh) rotate(360deg);
                 opacity: 0;
+            }
+        }
+
+        /* Telefon için özel stiller */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 18px;
+                width: 85%;
+            }
+            
+            .buttons {
+                gap: 12px;
             }
         }
     </style>
@@ -114,8 +185,11 @@
             yesSize += 0.2;
             yesBtn.style.transform = `scale(${yesSize})`;
             
-            const x = Math.random() * 300 - 150;
-            const y = Math.random() * 300 - 150;
+            const isMobile = window.innerWidth <= 768;
+            const maxMove = isMobile ? 100 : 150;
+            
+            const x = Math.random() * maxMove * 2 - maxMove;
+            const y = Math.random() * maxMove * 2 - maxMove;
             noBtn.style.transform = `scale(${noSize}) translate(${x}px, ${y}px)`;
             
             if (clickCount >= 15) {
@@ -130,7 +204,7 @@
         }
 
         function createHearts() {
-            const heartCount = 50;
+            const heartCount = 30;
             
             for (let i = 0; i < heartCount; i++) {
                 setTimeout(() => {
@@ -146,7 +220,7 @@
             
             const left = Math.random() * 100;
             const animationDuration = 2 + Math.random() * 2;
-            const fontSize = 20 + Math.random() * 30;
+            const fontSize = 15 + Math.random() * 25;
             
             heart.style.left = left + 'vw';
             heart.style.fontSize = fontSize + 'px';
@@ -158,6 +232,12 @@
                 heart.remove();
             }, animationDuration * 1000);
         }
+
+        // Telefon dokunmatik desteği
+        document.getElementById('noBtn').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton();
+        });
     </script>
 </body>
 </html>
